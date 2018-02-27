@@ -1,0 +1,2 @@
+export const SET_MATCHED_USERS = 'SET_MATCHED_USERS'
+export const LIKE_USER = 'LIKE_USER'
