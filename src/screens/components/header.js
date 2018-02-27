@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Platform, StyleSheet, Text, Image, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import SvgImage from 'react-native-svg-uri'
 
 export default class Header extends Component {
   render() {
@@ -11,11 +12,11 @@ export default class Header extends Component {
         {Platform.OS === 'ios' && <View style={styles.iosPadding} />}
         <View style={styles.header}>
           <TouchableOpacity onPress={leftButtonOnPress} style={[styles.icon, { left: 15 }]}>
-            <Ionicons name="ios-menu" color="rgb(71, 135, 253)" size={25} />
+            <Image style={styles.iconImage} source={require('../../../assets/icons/menu.png')} />
           </TouchableOpacity>
-          <Text>Search</Text>
+          <Text style={{ fontSize: 30, color: 'rgb(54, 108, 247)' }}>Hello</Text>
           <TouchableOpacity style={[styles.icon, { right: 15 }]}>
-            <Ionicons name="ios-mail" color="rgb(71, 135, 253)" size={25} />
+            <Image style={styles.iconImage} source={require('../../../assets/icons/mail.png')} />
           </TouchableOpacity>
         </View>
       </View>
@@ -35,5 +36,10 @@ const styles = StyleSheet.create({
   icon: {
     position: 'absolute'
     // height: 50
+  },
+  iconImage: {
+    width: 30,
+    height: 22,
+    resizeMode: 'stretch'
   }
 })

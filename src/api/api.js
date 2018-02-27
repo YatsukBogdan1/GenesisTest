@@ -13,7 +13,7 @@ const getMatches = filters => {
     }
 
     if (filters.city) {
-      filteredData = filteredData.filter(user => user.city === filters.city)
+      filteredData = filteredData.filter(user => user.city.toLowerCase() === filters.city.trim().toLowerCase())
     }
   }
   return filteredData

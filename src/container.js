@@ -5,11 +5,23 @@ import { View, ScrollView, Text, Image, StyleSheet } from 'react-native'
 
 const Navigator = DrawerNavigator(
   {
-    search: Search
+    search: {
+      screen: Search
+    }
   },
   {
     initialRouteName: 'search',
-    tintColor: 'red',
+    contentOptions: {
+      activeTintColor: 'black',
+      activeBackgroundColor: 'rgb(225, 233, 254)',
+      labelStyle: {
+        marginHorizontal: 0,
+        fontSize: 18
+      },
+      style: {
+        marginVertical: 0
+      }
+    },
     contentComponent: props => (
       <View style={styles.container}>
         <View style={styles.userInfo}>
@@ -22,6 +34,7 @@ const Navigator = DrawerNavigator(
             <Text style={styles.userLocation}>Kyiv, Ukraine</Text>
           </View>
         </View>
+        <View style={{ height: 1, backgroundColor: '#ddd' }} />
         <ScrollView style={{ flex: 1 }}>
           <DrawerItems {...props} />
         </ScrollView>
@@ -41,17 +54,17 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   userImage: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     marginRight: 15
   },
   userName: {
     color: 'rgb(71, 135, 253)',
-    fontSize: 17
+    fontSize: 22
   },
   userLocation: {
-    fontSize: 15
+    fontSize: 18
   }
 })
 

@@ -11,10 +11,11 @@ import Pagination from './components/pagination'
 import UserCard from './components/userCard'
 
 class Search extends Component {
-  static navigationOptions = {
-    drawerLabel: 'Search',
-    drawerIcon: () => <Ionicons size={30} name="ios-search" color="rgb(71, 135, 253)" />
-  }
+  static navigationOptions = ({ navigation: { state: { params } } }) => ({
+    drawerLabel: 'SEARCH',
+    drawerIcon: () => <Ionicons size={30} name="ios-search" color="rgb(71, 135, 253)" />,
+    drawerLockMode: params && params.swipeLocked ? 'locked-closed' : 'locked-opened'
+  })
 
   constructor(props) {
     super(props)
@@ -31,6 +32,16 @@ class Search extends Component {
 
   componentDidMount() {
     this.fetchData({ age: { from: 18, to: 70 }, page: 0 })
+  }
+
+  openFilters = () => {
+    this.setState({ filtersVisible: true })
+    this.props.navigation.setParams({ swipeLocked: true })
+  }
+
+  closeFilters = () => {
+    this.setState({ filtersVisible: false })
+    this.props.navigation.setParams({ swipeLocked: false })
   }
 
   fetchData = filterObject => {
@@ -65,7 +76,7 @@ class Search extends Component {
   }
 
   renderContent() {
-    const { loading, currentPage } = this.state
+    const { loading, currentPage, pages } = this.state
     const { matchedUsers, liked } = this.props
 
     if (loading) {
@@ -104,17 +115,18 @@ class Search extends Component {
     }
     return (
       <ScrollView style={styles.scroll}>
-        <View style={{ padding: 10 }}>
+        <View style={{ paddingVertical: 15, paddingHorizontal: 10 }}>
           {usersGrid.map(usersRow => (
             <View style={{ flexDirection: 'row', marginBottom: 20 }} key={usersRow[0].id}>
               <UserCard
                 user={usersRow[0]}
                 liked={liked.includes(usersRow[0].id)}
                 likeUser={() => this.props.likeUser(usersRow[0].id)}
-                style={{ marginRight: 20 }}
+                style={{ marginRight: 10, flex: 1 }}
               />
               {usersRow[1] ? (
                 <UserCard
+                  style={{ flex: 1 }}
                   user={usersRow[1]}
                   liked={liked.includes(usersRow[1].id)}
                   likeUser={() => this.props.likeUser(usersRow[1].id)}
@@ -125,6 +137,7 @@ class Search extends Component {
             </View>
           ))}
         </View>
+        <Pagination currentPage={currentPage} pages={pages} goToPage={this.goToPage} />
       </ScrollView>
     )
   }
@@ -138,19 +151,17 @@ class Search extends Component {
 
         {this.renderContent()}
 
-        <Pagination currentPage={currentPage} pages={pages} goToPage={this.goToPage} />
-
         <Filters
           age={age}
           city={city}
           visible={filtersVisible}
-          close={() => this.setState({ filtersVisible: false })}
+          close={this.closeFilters}
           onChangeCityText={city => this.setState({ city })}
           clearCity={() => this.setState({ city: '' })}
           onAgeValuesChange={age => this.setState({ age })}
           findNewUsers={this.findNewUsers}
         />
-        <SearchButton onPress={() => this.setState({ filtersVisible: true })} />
+        <SearchButton onPress={this.openFilters} />
       </View>
     )
   }
